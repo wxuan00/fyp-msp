@@ -51,7 +51,7 @@ To run this project locally, ensure you have the following installed:
 3. **Python Sidecar Setup**:
     - Navigate to the sidecar directory:
       ```bash
-      cd sidecar
+      cd python-sidecar
       ```
     - Create a virtual environment and activate it:
       ```bash
