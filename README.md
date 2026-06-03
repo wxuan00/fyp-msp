@@ -65,7 +65,7 @@ To run this project locally, ensure you have the following installed:
     - Run the FastAPI application:
       ```bash
       uvicorn main:app --reload --host 0.0.0.0 --port 8000
-    ```
+      ```
 4. **Frontend Setup**:
     - Navigate to the frontend directory:
       ```bash
