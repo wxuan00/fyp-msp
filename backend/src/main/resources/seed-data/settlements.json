@@ -1,0 +1,41 @@
+[
+  { "creditAdviceIndex": 0,  "settlementNo": "STL00000001", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-02T10:00:00", "transactionIndexes": [0, 10, 20] },
+  { "creditAdviceIndex": 1,  "settlementNo": "STL00000002", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-26T10:00:00", "transactionIndexes": [30, 40, 50] },
+  { "creditAdviceIndex": 2,  "settlementNo": "STL00000003", "settlementType": "ADJUSTMENT",  "currency": "MYR", "settlementDate": "2025-05-19T10:00:00", "transactionIndexes": [60, 70, 80] },
+
+  { "creditAdviceIndex": 3,  "settlementNo": "STL00000004", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-03T10:00:00", "transactionIndexes": [1, 11, 21] },
+  { "creditAdviceIndex": 4,  "settlementNo": "STL00000005", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-27T10:00:00", "transactionIndexes": [31, 41, 51] },
+  { "creditAdviceIndex": 5,  "settlementNo": "STL00000006", "settlementType": "CHARGEBACK",  "currency": "MYR", "settlementDate": "2025-05-20T10:00:00", "transactionIndexes": [61, 71, 81] },
+
+  { "creditAdviceIndex": 6,  "settlementNo": "STL00000007", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-04T10:00:00", "transactionIndexes": [2, 12, 22] },
+  { "creditAdviceIndex": 7,  "settlementNo": "STL00000008", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-28T10:00:00", "transactionIndexes": [32, 42, 52] },
+  { "creditAdviceIndex": 8,  "settlementNo": "STL00000009", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-21T10:00:00", "transactionIndexes": [62, 72, 82] },
+
+  { "creditAdviceIndex": 9,  "settlementNo": "STL00000010", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-02T14:00:00", "transactionIndexes": [3, 13, 23] },
+  { "creditAdviceIndex": 10, "settlementNo": "STL00000011", "settlementType": "ADJUSTMENT",  "currency": "MYR", "settlementDate": "2025-05-26T14:00:00", "transactionIndexes": [33, 43, 53] },
+  { "creditAdviceIndex": 11, "settlementNo": "STL00000012", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-19T14:00:00", "transactionIndexes": [63, 73, 83] },
+
+  { "creditAdviceIndex": 12, "settlementNo": "STL00000013", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-03T09:00:00", "transactionIndexes": [4, 14, 24] },
+  { "creditAdviceIndex": 13, "settlementNo": "STL00000014", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-27T09:00:00", "transactionIndexes": [34, 44, 54] },
+  { "creditAdviceIndex": 14, "settlementNo": "STL00000015", "settlementType": "CHARGEBACK",  "currency": "MYR", "settlementDate": "2025-05-20T09:00:00", "transactionIndexes": [64, 74, 84] },
+
+  { "creditAdviceIndex": 15, "settlementNo": "STL00000016", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-04T11:00:00", "transactionIndexes": [5, 15, 25] },
+  { "creditAdviceIndex": 16, "settlementNo": "STL00000017", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-28T11:00:00", "transactionIndexes": [35, 45, 55] },
+  { "creditAdviceIndex": 17, "settlementNo": "STL00000018", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-21T11:00:00", "transactionIndexes": [65, 75, 85] },
+
+  { "creditAdviceIndex": 18, "settlementNo": "STL00000019", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-02T15:00:00", "transactionIndexes": [6, 16, 26] },
+  { "creditAdviceIndex": 19, "settlementNo": "STL00000020", "settlementType": "ADJUSTMENT",  "currency": "MYR", "settlementDate": "2025-05-26T15:00:00", "transactionIndexes": [36, 46, 56] },
+  { "creditAdviceIndex": 20, "settlementNo": "STL00000021", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-19T15:00:00", "transactionIndexes": [66, 76] },
+
+  { "creditAdviceIndex": 21, "settlementNo": "STL00000022", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-03T13:00:00", "transactionIndexes": [7, 17, 27] },
+  { "creditAdviceIndex": 22, "settlementNo": "STL00000023", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-27T13:00:00", "transactionIndexes": [37, 47, 57] },
+  { "creditAdviceIndex": 23, "settlementNo": "STL00000024", "settlementType": "CHARGEBACK",  "currency": "MYR", "settlementDate": "2025-05-20T13:00:00", "transactionIndexes": [67, 77] },
+
+  { "creditAdviceIndex": 24, "settlementNo": "STL00000025", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-04T16:00:00", "transactionIndexes": [8, 18, 28] },
+  { "creditAdviceIndex": 25, "settlementNo": "STL00000026", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-28T16:00:00", "transactionIndexes": [38, 48, 58] },
+  { "creditAdviceIndex": 26, "settlementNo": "STL00000027", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-21T16:00:00", "transactionIndexes": [68, 78] },
+
+  { "creditAdviceIndex": 27, "settlementNo": "STL00000028", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-06-02T08:00:00", "transactionIndexes": [9, 19, 29] },
+  { "creditAdviceIndex": 28, "settlementNo": "STL00000029", "settlementType": "ADJUSTMENT",  "currency": "MYR", "settlementDate": "2025-05-26T08:00:00", "transactionIndexes": [39, 49, 59] },
+  { "creditAdviceIndex": 29, "settlementNo": "STL00000030", "settlementType": "NORMAL",     "currency": "MYR", "settlementDate": "2025-05-19T08:00:00", "transactionIndexes": [69, 79] }
+]

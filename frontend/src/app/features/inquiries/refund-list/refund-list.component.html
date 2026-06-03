@@ -1,0 +1,138 @@
+﻿<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Refund Transaction Inquiry</h1>
+      <div class="breadcrumb">Inquiries > Refunds</div>
+    </div>
+    <div class="header-actions">
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <div class="filter-item">
+      <label class="filter-label">Merchant Name</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter merchant name" [(ngModel)]="filterMerchant" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Refund Reference Number</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter refund reference number" [(ngModel)]="filterRefundRef" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Transaction ID</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter transaction ID" [(ngModel)]="filterTransactionId" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Status</label>
+      <div class="select-wrap">
+        <select [(ngModel)]="filterStatus" (change)="onFilterChange()">
+          <option value="">All Statuses</option>
+          <option value="APPROVED">Refunded</option>
+          <option value="PENDING">Pending</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Type</label>
+      <div class="select-wrap">
+        <select [(ngModel)]="filterType" (change)="onFilterChange()">
+          <option value="">All Types</option>
+          <option value="FULL">Full</option>
+          <option value="PARTIAL">Partial</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-item filter-date-from">
+      <label class="filter-label">Date From</label>
+      <input type="date" class="form-control" [(ngModel)]="dateFrom" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item filter-date-to">
+      <label class="filter-label">Date To</label>
+      <input type="date" class="form-control" [(ngModel)]="dateTo" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item filter-action">
+      <label class="filter-label">&nbsp;</label>
+      <button class="btn btn-sm btn-ghost" (click)="clearFilters()">✕ Clear</button>
+    </div>
+  </div>
+
+  <div class="card">
+    @if (loading) {
+      <div class="table-loading">Loading refunds...</div>
+    } @else if (loadError) {
+      <div class="load-error">
+        <span>&#9888; Failed to load data. Is the server running?</span>
+        <button class="btn btn-sm btn-outline" (click)="loadPage()">&#8635; Retry</button>
+      </div>
+    } @else {
+      <div class="card-header">
+        <h3>Refunds ({{ totalItems }})</h3>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sortBy('refundId')">Refund ID {{ getSortIcon('refundId') }}</th>
+            <th class="sortable" (click)="sortBy('transactionId')">Transaction ID {{ getSortIcon('transactionId') }}</th>
+            <th class="sortable" (click)="sortBy('merchantName')">Merchant Name {{ getSortIcon('merchantName') }}</th>
+            <th class="sortable" (click)="sortBy('refundAmount')">Refund Amount {{ getSortIcon('refundAmount') }}</th>
+            <th>Card Number</th>
+            <th>Refund Reference Number</th>
+            <th>Type</th>
+            <th class="sortable" (click)="sortBy('status')">Status {{ getSortIcon('status') }}</th>
+            <th class="sortable" (click)="sortBy('submissionDate')">Submitted {{ getSortIcon('submissionDate') }}</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of refunds; track r.refundId) {
+            <tr>
+              <td class="id-cell">{{ r.refundId }}</td>
+              <td class="id-cell">{{ r.transactionId ? '#' + r.transactionId : '-' }}</td>
+              <td><strong>{{ r.merchantName }}</strong></td>
+              <td class="amount-cell refund-amount">{{ r.currency }} {{ r.refundAmount | number:'1.2-2' }}</td>
+              <td>{{ r.cardNo | maskCard }}</td>
+              <td class="id-cell">{{ r.refundRefNo || '-' }}</td>
+              <td>{{ r.refundType || '-' }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'badge-info': r.status === 'APPROVED',
+                  'badge-warning': r.status === 'PENDING',
+                  'badge-danger': r.status === 'CANCELLED'
+                }">{{
+                  r.status === 'APPROVED' ? 'Refunded' :
+                  r.status
+                }}</span>
+              </td>
+              <td class="date-cell">{{ formatDate(r.submissionDate!) }}</td>
+              <td>
+                <button (click)="viewDetails(r.refundId)" class="btn btn-sm btn-outline">View</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div *ngIf="refunds.length === 0" class="no-data">
+        No refund records found.
+      </div>
+
+      <app-pagination
+        [currentPage]="currentPage"
+        [pageSize]="pageSize"
+        [totalItems]="totalItems"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    }
+  </div>
+</div>

@@ -1,0 +1,259 @@
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Multi-merchant chips */
+.merchant-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.merchant-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  color: #3730a3;
+}
+.chip-remove {
+  background: none;
+  border: none;
+  color: #6366f1;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0 2px;
+  line-height: 1;
+}
+.chip-remove:hover {
+  color: #dc2626;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.label-optional {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* ── Merchant search field ─────────────────────────────────── */
+.merchant-search-group {
+  margin-top: 4px;
+}
+
+.merchant-search-wrap {
+  position: relative;
+}
+
+.merchant-search-wrap .search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.merchant-search-wrap .search-prefix {
+  position: absolute;
+  left: 10px;
+  font-size: 0.85rem;
+  pointer-events: none;
+  color: #9ca3af;
+}
+
+.merchant-search-wrap input {
+  padding-left: 32px !important;
+}
+
+.merchant-dropdown {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.09);
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 200;
+}
+
+.merchant-dropdown li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-size: 0.87rem;
+}
+
+.merchant-dropdown li:hover {
+  background: #f5f7ff;
+}
+
+.merchant-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.merchant-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.merchant-info strong { font-size: 0.87rem; color: #111; }
+.merchant-info small  { font-size: 0.76rem; color: #9ca3af; }
+
+.status-dot-active    { color: #16a34a; font-weight: 600; }
+.status-dot-suspended { color: #ef4444; font-weight: 600; }
+.status-dot-pending   { color: #d97706; font-weight: 600; }
+
+.merchant-selected {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid #6366f1;
+  border-radius: 7px;
+  background: #eef2ff;
+}
+
+.merchant-locked-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: #f9fafb;
+  font-size: 0.86rem;
+  color: #374151;
+}
+
+.merchant-selected-icon { font-size: 1.1rem; }
+
+.merchant-selected-name {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #3730a3;
+}
+
+.btn-clear-merchant {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.12s;
+}
+
+.btn-clear-merchant:hover { color: #ef4444; }
+
+.search-hint {
+  padding: 6px 4px;
+  font-size: 0.81rem;
+  color: #9ca3af;
+}
+.text-muted {
+  color: #888;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.permissions-section {
+  margin-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 18px;
+}
+
+.permissions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.permissions-header h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.role-select-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 6px;
+}
+
+.perm-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s;
+  font-size: 0.83rem;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.perm-item:hover { background: #f3f4f6; }
+
+.perm-item.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  pointer-events: none;
+}
+
+.perm-item.selected {
+  background: #eef2ff;
+  border-color: #6366f1;
+}
+
+.perm-item input[type="radio"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+  accent-color: #6366f1;
+}
+
+.perm-name {
+  font-weight: 600;
+  color: #111;
+}
+
+.perm-desc {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-left: 4px;
+}

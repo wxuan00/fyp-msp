@@ -1,0 +1,174 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Transaction Detail</h1>
+      <div class="breadcrumb">
+        <a routerLink="/transactions">Inquiries › Transactions</a> › {{ transactionId }}
+      </div>
+    </div>
+    <div class="header-actions">
+      <button (click)="exportDetailPdf()" class="btn btn-primary">📄 Export PDF</button>
+      @if (transaction?.status === 'PENDING') {
+        <button (click)="openRefundModal()" class="btn btn-warning">↩ Request Refund</button>
+      }
+      <a routerLink="/transactions" class="btn btn-secondary">← Back to List</a>
+    </div>
+  </div>
+
+  <!-- Loading Skeleton -->
+  @if (loading) {
+    <div class="detail-grid">
+      <div class="card summary-card skeleton-summary">
+        <div class="skeleton-line" style="width:200px;height:32px;margin:0 auto 12px;"></div>
+        <div class="skeleton-line" style="width:80px;height:24px;margin:0 auto;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="skeleton-line" style="width:180px;height:18px;"></div></div>
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+          <div class="detail-row">
+            <label><div class="skeleton-line" style="width:100px;height:14px;"></div></label>
+            <span><div class="skeleton-line" style="width:160px;height:14px;"></div></span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!loading && !transaction) {
+    <div class="card" style="padding:48px;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
+      <h3 style="color:#888;">Transaction Not Found</h3>
+      <p style="color:#aaa;margin:8px 0 20px;">The transaction {{ transactionId }} could not be found.</p>
+      <a routerLink="/transactions" class="btn btn-primary">← Back to Transactions</a>
+    </div>
+  }
+
+  <div *ngIf="transaction && !loading" class="detail-grid">
+    <!-- Transaction Summary Card -->
+    <div class="card summary-card">
+      <div class="summary-header">
+        <div class="summary-amount">{{ transaction.currency }} {{ transaction.amount | number:'1.2-2' }}</div>
+        <span class="badge" [ngClass]="{
+          'badge-success': transaction.status === 'APPROVED',
+          'badge-warning': transaction.status === 'PENDING',
+          'badge-danger': transaction.status === 'DECLINED',
+          'badge-refund': transaction.status === 'REFUND_REQUESTED',
+          'badge-info': transaction.status === 'REFUNDED'
+        }">{{
+          transaction.status === 'REFUND_REQUESTED' ? 'Requested Refund' :
+          transaction.status === 'REFUNDED' ? 'Refunded' :
+          transaction.status
+        }}</span>
+      </div>
+      <div class="summary-meta">
+        <span class="badge badge-info">{{ transaction.paymentChannel }}</span>
+        <span class="summary-date">{{ formatDate(transaction.txnDate) }}</span>
+      </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Transaction Information</h3>
+      </div>
+      <div class="detail-row">
+        <label>Transaction ID</label>
+        <span class="id-cell">{{ transaction.transactionId }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Merchant</label>
+        <span>{{ transaction.merchantName }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Payment Channel</label>
+        <span>{{ transaction.paymentChannel }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Amount</label>
+        <span>{{ transaction.currency }} {{ transaction.amount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Discount</label>
+        <span>{{ transaction.currency }} {{ transaction.discountAmount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Nett Amount</label>
+        <span>{{ transaction.currency }} {{ transaction.nettAmount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Card No</label>
+        <span>{{ transaction.cardNo | maskCard }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Ref No</label>
+        <span class="id-cell">{{ transaction.refNo || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Description</label>
+        <span>{{ transaction.txnDescription || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Transaction Date</label>
+        <span>{{ formatDate(transaction.txnDate) }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Posted Date</label>
+        <span>{{ formatDate(transaction.postedDate) }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Refund Modal -->
+@if (showRefundModal) {
+  <div class="modal-backdrop" (click)="showRefundModal = false">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>↩ Request Refund</h3>
+        <button class="modal-close" (click)="showRefundModal = false">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info-row">
+          <span class="modal-info-label">Transaction</span>
+          <span class="modal-info-value">{{ transaction.transactionId }}</span>
+        </div>
+        <div class="modal-info-row">
+          <span class="modal-info-label">Merchant</span>
+          <span class="modal-info-value">{{ transaction.merchantName }}</span>
+        </div>
+        <div class="modal-info-row">
+          <span class="modal-info-label">Original Amount</span>
+          <span class="modal-info-value">{{ transaction.currency }} {{ transaction.amount | number:'1.2-2' }}</span>
+        </div>
+        <hr style="margin:14px 0;border-color:#e5e7eb;">
+        <div class="modal-form-group">
+          <label>Refund Type</label>
+          <select [(ngModel)]="refundForm.refundType" (change)="onRefundTypeChange()" class="form-control">
+            <option value="FULL">Full Refund</option>
+            <option value="PARTIAL">Partial Refund</option>
+          </select>
+        </div>
+        <div class="modal-form-group">
+          <label>Refund Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="refundForm.refundAmount"
+            [readonly]="refundForm.refundType === 'FULL'"
+            [min]="0.01"
+            [max]="transaction.amount"
+            step="0.01">
+          <small *ngIf="refundForm.refundType === 'PARTIAL'" style="color:#6b7280;">
+            Enter amount between 0.01 and {{ transaction.amount | number:'1.2-2' }}
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="showRefundModal = false">Cancel</button>
+        <button class="btn btn-warning" (click)="submitRefund()" [disabled]="refundSubmitting">
+          {{ refundSubmitting ? 'Submitting…' : 'Submit Refund Request' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

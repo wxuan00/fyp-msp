@@ -1,0 +1,132 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Settlement Detail</h1>
+      <div class="breadcrumb">
+        <a routerLink="/credit-advices">Inquiries &rsaquo; Credit Advice</a>
+        <span *ngIf="settlement?.creditAdviceId"> &rsaquo; <a [routerLink]="['/credit-advices', settlement.creditAdviceId]">CA {{ settlement.creditAdviceId }}</a></span>
+        &rsaquo; Settlement {{ settlementId }}
+      </div>
+    </div>
+    <div class="header-actions">
+      <button (click)="exportDetailPdf()" class="btn btn-primary">📄 Export PDF</button>
+      <a *ngIf="settlement?.creditAdviceId" [routerLink]="['/credit-advices', settlement.creditAdviceId]" class="btn btn-secondary">&larr; Back to Credit Advice</a>
+      <a *ngIf="!settlement?.creditAdviceId" routerLink="/credit-advices" class="btn btn-secondary">&larr; Back</a>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="detail-grid">
+      <div class="card summary-card skeleton-summary">
+        <div class="skeleton-line" style="width:200px;height:32px;margin:0 auto 12px;"></div>
+        <div class="skeleton-line" style="width:80px;height:24px;margin:0 auto;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="skeleton-line" style="width:180px;height:18px;"></div></div>
+        @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+          <div class="detail-row">
+            <label><div class="skeleton-line" style="width:100px;height:14px;"></div></label>
+            <span><div class="skeleton-line" style="width:160px;height:14px;"></div></span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!loading && !settlement) {
+    <div class="card" style="padding:48px;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
+      <h3 style="color:#888;">Settlement Not Found</h3>
+      <p style="color:#aaa;margin:8px 0 20px;">The settlement {{ settlementId }} could not be found.</p>
+      <a routerLink="/settlements" class="btn btn-primary">← Back to Settlements</a>
+    </div>
+  }
+
+  <div *ngIf="settlement && !loading" class="detail-grid">
+    <!-- Settlement Summary Card -->
+    <div class="card summary-card">
+      <div class="summary-header">
+        <div class="summary-amount">{{ settlement.currency }} {{ settlement.settlementAmount | number:'1.2-2' }}</div>
+        <span class="badge badge-info">{{ settlement.settlementType }}</span>
+      </div>
+      <div class="summary-meta">
+        <span class="summary-label">Settlement Amount</span>
+        <span class="summary-date">{{ formatDate(settlement.settlementDate) }}</span>
+      </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Settlement Information</h3>
+      </div>
+      <div class="detail-row">
+        <label>Settlement ID</label>
+        <span class="id-cell">{{ settlement.settlementId }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Settlement No</label>
+        <span class="id-cell">{{ settlement.settlementNo || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Merchant</label>
+        <span>{{ settlement.merchantName || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Settlement Type</label>
+        <span>{{ settlement.settlementType || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Settlement Amount</label>
+        <span class="amount-cell">{{ settlement.currency }} {{ settlement.settlementAmount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Payment Amount</label>
+        <span class="amount-cell">{{ settlement.currency }} {{ settlement.paymentAmount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Credit Advice ID</label>
+        <span>{{ settlement.creditAdviceId || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Settlement Date</label>
+        <span>{{ formatDate(settlement.settlementDate) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nested Transactions Table -->
+  <div *ngIf="settlement && !loading" class="card" style="margin-top:24px;">
+    <div class="card-header">
+      <h3>💳 Transactions ({{ transactions.length }})</h3>
+    </div>
+    <div *ngIf="transactionsLoading" style="padding:20px;text-align:center;color:#888;">Loading transactions...</div>
+    <table *ngIf="!transactionsLoading && transactions.length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Merchant</th>
+          <th>Card No</th>
+          <th>Channel</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of transactions">
+          <td class="id-cell">{{ t.transactionId }}</td>
+          <td>{{ t.merchantName || '-' }}</td>
+          <td>{{ t.cardNo | maskCard }}</td>
+          <td>{{ t.paymentChannel || '-' }}</td>
+          <td class="amount-cell">{{ t.currency }} {{ formatAmount(t.amount) }}</td>
+          <td><span class="badge" [ngClass]="{'badge-success': t.status==='APPROVED','badge-danger': t.status==='FAILED' || t.status==='DECLINED','badge-warning': t.status==='PENDING'}">{{ t.status }}</span></td>
+          <td>{{ formatDate(t.txnDate) }}</td>
+          <td><a [routerLink]="['/transactions', t.transactionId]" class="btn btn-sm btn-outline">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!transactionsLoading && transactions.length === 0" style="padding:20px;text-align:center;color:#888;">No transactions found for this settlement.</div>
+  </div>
+</div>

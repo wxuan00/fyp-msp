@@ -1,0 +1,41 @@
+[
+  { "merchantIndex": 0, "accountNo": "****1023", "accountId": "ACC-M0-1", "currency": "MYR", "amount": "4520.50", "paymentDate": "2025-06-01T10:00:00" },
+  { "merchantIndex": 0, "accountNo": "****1023", "accountId": "ACC-M0-2", "currency": "MYR", "amount": "3180.75", "paymentDate": "2025-05-25T10:00:00" },
+  { "merchantIndex": 0, "accountNo": "****1023", "accountId": "ACC-M0-3", "currency": "MYR", "amount": "6712.30", "paymentDate": "2025-05-18T10:00:00" },
+
+  { "merchantIndex": 1, "accountNo": "****2047", "accountId": "ACC-M1-1", "currency": "MYR", "amount": "2890.00", "paymentDate": "2025-06-02T10:00:00" },
+  { "merchantIndex": 1, "accountNo": "****2047", "accountId": "ACC-M1-2", "currency": "MYR", "amount": "5340.20", "paymentDate": "2025-05-26T10:00:00" },
+  { "merchantIndex": 1, "accountNo": "****2047", "accountId": "ACC-M1-3", "currency": "MYR", "amount": "1975.60", "paymentDate": "2025-05-19T10:00:00" },
+
+  { "merchantIndex": 2, "accountNo": "****3061", "accountId": "ACC-M2-1", "currency": "MYR", "amount": "7250.00", "paymentDate": "2025-06-03T10:00:00" },
+  { "merchantIndex": 2, "accountNo": "****3061", "accountId": "ACC-M2-2", "currency": "MYR", "amount": "4100.85", "paymentDate": "2025-05-27T10:00:00" },
+  { "merchantIndex": 2, "accountNo": "****3061", "accountId": "ACC-M2-3", "currency": "MYR", "amount": "3560.40", "paymentDate": "2025-05-20T10:00:00" },
+
+  { "merchantIndex": 3, "accountNo": "****4085", "accountId": "ACC-M3-1", "currency": "MYR", "amount": "5680.90", "paymentDate": "2025-06-01T14:00:00" },
+  { "merchantIndex": 3, "accountNo": "****4085", "accountId": "ACC-M3-2", "currency": "MYR", "amount": "2430.15", "paymentDate": "2025-05-25T14:00:00" },
+  { "merchantIndex": 3, "accountNo": "****4085", "accountId": "ACC-M3-3", "currency": "MYR", "amount": "8190.70", "paymentDate": "2025-05-18T14:00:00" },
+
+  { "merchantIndex": 4, "accountNo": "****5012", "accountId": "ACC-M4-1", "currency": "MYR", "amount": "3920.45", "paymentDate": "2025-06-02T09:00:00" },
+  { "merchantIndex": 4, "accountNo": "****5012", "accountId": "ACC-M4-2", "currency": "MYR", "amount": "6150.30", "paymentDate": "2025-05-26T09:00:00" },
+  { "merchantIndex": 4, "accountNo": "****5012", "accountId": "ACC-M4-3", "currency": "MYR", "amount": "1840.00", "paymentDate": "2025-05-19T09:00:00" },
+
+  { "merchantIndex": 5, "accountNo": "****6034", "accountId": "ACC-M5-1", "currency": "MYR", "amount": "4780.25", "paymentDate": "2025-06-03T11:00:00" },
+  { "merchantIndex": 5, "accountNo": "****6034", "accountId": "ACC-M5-2", "currency": "MYR", "amount": "2670.80", "paymentDate": "2025-05-27T11:00:00" },
+  { "merchantIndex": 5, "accountNo": "****6034", "accountId": "ACC-M5-3", "currency": "MYR", "amount": "5910.55", "paymentDate": "2025-05-20T11:00:00" },
+
+  { "merchantIndex": 6, "accountNo": "****7056", "accountId": "ACC-M6-1", "currency": "MYR", "amount": "8340.10", "paymentDate": "2025-06-01T15:00:00" },
+  { "merchantIndex": 6, "accountNo": "****7056", "accountId": "ACC-M6-2", "currency": "MYR", "amount": "3290.65", "paymentDate": "2025-05-25T15:00:00" },
+  { "merchantIndex": 6, "accountNo": "****7056", "accountId": "ACC-M6-3", "currency": "MYR", "amount": "4560.20", "paymentDate": "2025-05-18T15:00:00" },
+
+  { "merchantIndex": 7, "accountNo": "****8078", "accountId": "ACC-M7-1", "currency": "MYR", "amount": "6100.00", "paymentDate": "2025-06-02T13:00:00" },
+  { "merchantIndex": 7, "accountNo": "****8078", "accountId": "ACC-M7-2", "currency": "MYR", "amount": "2150.95", "paymentDate": "2025-05-26T13:00:00" },
+  { "merchantIndex": 7, "accountNo": "****8078", "accountId": "ACC-M7-3", "currency": "MYR", "amount": "7480.35", "paymentDate": "2025-05-19T13:00:00" },
+
+  { "merchantIndex": 8, "accountNo": "****9091", "accountId": "ACC-M8-1", "currency": "MYR", "amount": "5230.70", "paymentDate": "2025-06-03T16:00:00" },
+  { "merchantIndex": 8, "accountNo": "****9091", "accountId": "ACC-M8-2", "currency": "MYR", "amount": "3870.40", "paymentDate": "2025-05-27T16:00:00" },
+  { "merchantIndex": 8, "accountNo": "****9091", "accountId": "ACC-M8-3", "currency": "MYR", "amount": "1690.15", "paymentDate": "2025-05-20T16:00:00" },
+
+  { "merchantIndex": 9, "accountNo": "****0015", "accountId": "ACC-M9-1", "currency": "MYR", "amount": "4410.60", "paymentDate": "2025-06-01T08:00:00" },
+  { "merchantIndex": 9, "accountNo": "****0015", "accountId": "ACC-M9-2", "currency": "MYR", "amount": "7620.25", "paymentDate": "2025-05-25T08:00:00" },
+  { "merchantIndex": 9, "accountNo": "****0015", "accountId": "ACC-M9-3", "currency": "MYR", "amount": "2980.90", "paymentDate": "2025-05-18T08:00:00" }
+]

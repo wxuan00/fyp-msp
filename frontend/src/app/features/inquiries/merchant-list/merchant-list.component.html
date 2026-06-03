@@ -1,0 +1,110 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1>Merchant Account Inquiry</h1>
+      <div class="breadcrumb">Inquiries &#8250; Merchants</div>
+    </div>
+    <div class="header-actions">
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <div class="filter-item">
+      <label class="filter-label">Merchant Name</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">&#128269;</span>
+        <input type="text" placeholder="Enter merchant name" [(ngModel)]="searchTerm" (input)="applyFilters()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Status</label>
+      <div class="select-wrap">
+        <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+          <option value="">All Statuses</option>
+          <option value="ACTIVE">Active</option>
+          <option value="PENDING">Pending</option>
+          <option value="SUSPENDED">Suspended</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-item filter-action">
+      <label class="filter-label">&nbsp;</label>
+      <button class="btn btn-sm btn-ghost" (click)="clearFilters()">&#10005; Clear</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div *ngIf="loading" class="table-loading">Loading merchants...</div>
+
+    <div *ngIf="loadError" class="load-error">
+      <span>&#9888; Failed to load data. Is the server running?</span>
+      <button class="btn btn-sm btn-outline" (click)="loadMerchants()">&#8635; Retry</button>
+    </div>
+
+    <ng-container *ngIf="!loading && !loadError">
+      <div class="card-header">
+        <h3>Merchants ({{ pagination.totalItems }})</h3>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sort('merchantId')">
+              ID {{ getSortIcon('merchantId') }}
+            </th>
+            <th class="sortable" (click)="sort('merchantName')">
+              Merchant Name {{ getSortIcon('merchantName') }}
+            </th>
+            <th>Contact</th>
+            <th class="sortable" (click)="sort('city')">
+              City {{ getSortIcon('city') }}
+            </th>
+            <th class="sortable" (click)="sort('status')">
+              Status {{ getSortIcon('status') }}
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of merchants">
+            <td class="id-cell">{{ $any(m).merchantId }}</td>
+            <td><strong>{{ $any(m).merchantName }}</strong></td>
+            <td>{{ $any(m).contact || '-' }}</td>
+            <td>{{ $any(m).city || '-' }}</td>
+            <td>
+              <span class="badge" [ngClass]="{'badge-success': $any(m).status === 'ACTIVE', 'badge-warning': $any(m).status === 'PENDING', 'badge-danger': $any(m).status === 'SUSPENDED'}">{{ $any(m).status }}</span>
+            </td>
+            <td>
+              <div class="action-btns">
+                <button (click)="viewDetails($any(m).merchantId)" class="btn btn-sm btn-outline">View</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="merchants.length === 0" class="no-data">
+        No merchants found.
+      </div>
+
+      <app-pagination
+        [currentPage]="pagination.currentPage"
+        [pageSize]="pagination.pageSize"
+        [totalItems]="pagination.totalItems"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    </ng-container>
+  </div>
+
+  <app-confirm-dialog
+    [visible]="showDeleteDialog"
+    title="Delete Merchant"
+    [message]="'Are you sure you want to delete merchant \'' + deleteTargetName + '\'? This action cannot be undone.'"
+    confirmText="Delete"
+    type="danger"
+    (confirmed)="confirmDeleteMerchant()"
+    (cancelled)="cancelDeleteMerchant()">
+  </app-confirm-dialog>
+</div>

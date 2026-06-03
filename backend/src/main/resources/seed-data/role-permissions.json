@@ -1,0 +1,11 @@
+{
+  "ADMIN": ["ALL"],
+  "MERCHANT": [
+    "VIEW_DASHBOARD",
+    "VIEW_TRANSACTIONS",
+    "VIEW_SETTLEMENTS",
+    "VIEW_CREDIT_ADVICES",
+    "VIEW_REFUNDS",
+    "VIEW_OWN_DATA"
+  ]
+}

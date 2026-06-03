@@ -1,0 +1,100 @@
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto auto;
+  gap: 10px 12px;
+  align-items: end;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.filter-item.filter-date-from      { grid-column: 1; grid-row: 2; }
+.filter-item.filter-date-to        { grid-column: 2; grid-row: 2; }
+.filter-item.filter-action         { grid-column: 3; grid-row: 2; justify-self: start; }
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.filter-item.filter-action { justify-self: start; }
+
+.filter-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.filter-item input[type="text"],
+.filter-item input[type="date"],
+.filter-item select {
+  height: 36px;
+  padding: 0 10px;
+  font-size: 0.84rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.12);
+}
+
+.search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrap .search-prefix {
+  position: absolute;
+  left: 9px;
+  font-size: 0.85rem;
+  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.search-input-wrap input { padding-left: 30px !important; width: 100%; }
+
+.select-wrap { position: relative; display: flex; align-items: center; }
+.select-wrap::after { content: '\25BE'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 0.85rem; color: #6b7280; }
+.select-wrap select { appearance: none; -webkit-appearance: none; padding-right: 28px !important; width: 100%; cursor: pointer; }
+.header-actions { display: flex; gap: 8px; }
+
+.btn-export-pdf {
+  background: #1e40af;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-export-pdf:hover { background: #1e3a8a; }
+.btn-ghost { background: none; border: 1px solid #ddd; color: #888; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; transition: all 0.15s; }
+.btn-ghost:hover { border-color: #111; color: #111; }
+.id-cell { font-family: 'Courier New', monospace; font-weight: 600; color: #111; }
+.amount-cell { font-weight: 700; font-family: 'Courier New', monospace; }
+.refund-amount { color: #e74c3c; }
+.date-cell { color: #888; font-size: 0.82rem; white-space: nowrap; }
+.sortable { cursor: pointer; user-select: none; transition: color 0.15s; }
+.sortable:hover { color: #111; }
+.table-loading { padding: 40px 20px; text-align: center; color: #888; font-size: 0.9rem; }

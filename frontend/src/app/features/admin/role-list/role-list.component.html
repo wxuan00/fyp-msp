@@ -1,0 +1,93 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Role Management</h1>
+      <div class="breadcrumb">Administration &rsaquo; Roles</div>
+    </div>
+    <button (click)="goToCreateRole()" class="btn btn-primary">+ Add Role</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 'bank'" (click)="switchTab('bank')">
+      &#127970; Bank Roles <span class="tab-count">{{ bankRoleCount }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'merchant'" (click)="switchTab('merchant')">
+      &#127978; Merchant Roles <span class="tab-count">{{ merchantRoleCount }}</span>
+    </button>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-item filter-search">
+      <label class="filter-label">ROLES</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">&#128269;</span>
+        <input
+          type="text"
+          [placeholder]="activeTab === 'bank' ? 'Enter bank role name' : 'Enter merchant role name'"
+          [(ngModel)]="searchTerm"
+          (input)="applyFilter()"
+        >
+      </div>
+    </div>
+    <div class="filter-item filter-action">
+      <label class="filter-label">&nbsp;</label>
+      <button class="btn btn-sm btn-ghost" (click)="clearFilters()">✕ Clear</button>
+    </div>
+  </div>
+
+  <div class="card">
+    @if (loading) {
+      <div class="table-loading">Loading roles...</div>
+    } @else if (loadError) {
+      <div class="load-error">
+        <span>&#9888; Failed to load data. Is the server running?</span>
+        <button class="btn btn-sm btn-outline" (click)="fetchRoles()">&#8635; Retry</button>
+      </div>
+    } @else {
+    <div class="card-header">
+      <h3>{{ activeTab === 'bank' ? 'Bank' : 'Merchant' }} Roles ({{ roles.length }})</h3>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles">
+          <td class="id-cell">{{ role.roleId }}</td>
+          <td><span class="badge badge-primary">{{ role.roleName }}</span></td>
+          <td>{{ role.roleType || '-' }}</td>
+          <td>{{ role.description || '-' }}</td>
+          <td>
+            <div class="action-btns">
+              <a [routerLink]="['/roles', role.roleId, 'view']" class="btn btn-sm btn-outline">View</a>
+              <a [routerLink]="['/roles', role.roleId, 'edit']" class="btn btn-sm btn-outline">Edit</a>
+              <button (click)="deleteRole(role.roleId, role.roleName)" class="btn btn-sm btn-danger">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="roles.length === 0" class="no-data">
+      No {{ activeTab === 'bank' ? 'bank' : 'merchant' }} roles defined yet.
+    </div>
+    }
+  </div>
+
+  <app-confirm-dialog
+    [visible]="showDeleteDialog"
+    title="Delete Role"
+    [message]="'Are you sure you want to delete role \'' + deleteTargetName + '\'? This action cannot be undone.'"
+    confirmText="Delete"
+    type="danger"
+    (confirmed)="confirmDeleteRole()"
+    (cancelled)="cancelDeleteRole()">
+  </app-confirm-dialog>
+</div>
+

@@ -1,0 +1,95 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Credit Advice Inquiry</h1>
+      <div class="breadcrumb">Inquiries › Credit Advice</div>
+    </div>
+    <div class="header-actions">
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <div class="filter-item filter-search">
+      <label class="filter-label">Merchant Name</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter merchant name" [(ngModel)]="filterMerchant" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Account ID</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter account ID" [(ngModel)]="filterAccountId" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Date From</label>
+      <input type="date" class="form-control" [(ngModel)]="dateFrom" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Date To</label>
+      <input type="date" class="form-control" [(ngModel)]="dateTo" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item filter-action">
+      <label class="filter-label">&nbsp;</label>
+      <button class="btn btn-sm btn-ghost" (click)="clearFilters()">✕ Clear</button>
+    </div>
+  </div>
+
+  <div class="card">
+    @if (loading) {
+      <div class="table-loading">Loading credit advices...</div>
+    } @else if (loadError) {
+      <div class="load-error">
+        <span>&#9888; Failed to load data. Is the server running?</span>
+        <button class="btn btn-sm btn-outline" (click)="loadPage()">&#8635; Retry</button>
+      </div>
+    } @else {
+      <div class="card-header">
+        <h3>Credit Advices ({{ totalItems }})</h3>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sortBy('creditAdviceId')">ID {{ getSortIcon('creditAdviceId') }}</th>
+            <th class="sortable" (click)="sortBy('merchantName')">Merchant {{ getSortIcon('merchantName') }}</th>
+            <th class="sortable" (click)="sortBy('amount')">Amount {{ getSortIcon('amount') }}</th>
+            <th>Account No</th>
+            <th>Account ID</th>
+            <th class="sortable" (click)="sortBy('paymentDate')">Payment Date {{ getSortIcon('paymentDate') }}</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ca of creditAdvices; track ca.creditAdviceId) {
+            <tr>
+              <td class="id-cell">{{ ca.creditAdviceId }}</td>
+              <td><strong>{{ ca.merchantName || '-' }}</strong></td>
+              <td class="amount-cell">{{ ca.currency }} {{ ca.amount | number:'1.2-2' }}</td>
+              <td>{{ ca.accountNo || '-' }}</td>
+              <td>{{ ca.accountId || '-' }}</td>
+              <td class="date-cell">{{ formatDate(ca.paymentDate!) }}</td>
+              <td>
+                <button (click)="viewDetails(ca.creditAdviceId)" class="btn btn-sm btn-outline">View</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div *ngIf="creditAdvices.length === 0" class="no-data">
+        No credit advices found.
+      </div>
+
+      <app-pagination
+        [currentPage]="currentPage"
+        [pageSize]="pageSize"
+        [totalItems]="totalItems"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    }
+  </div>
+</div>

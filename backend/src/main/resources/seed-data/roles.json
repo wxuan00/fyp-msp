@@ -1,0 +1,17 @@
+[
+  {
+    "roleName": "ADMIN",
+    "description": "System administrator with full access",
+    "roleType": "SYSTEM"
+  },
+  {
+    "roleName": "MERCHANT",
+    "description": "Merchant user with limited access to own data",
+    "roleType": "BUSINESS"
+  },
+  {
+    "roleName": "VIEWER",
+    "description": "Read-only access to reports",
+    "roleType": "SYSTEM"
+  }
+]

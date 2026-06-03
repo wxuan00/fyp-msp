@@ -1,0 +1,52 @@
+[
+  {
+    "permissionName": "VIEW_DASHBOARD",
+    "description": "View dashboard and analytics",
+    "module": "DASHBOARD"
+  },
+  {
+    "permissionName": "MANAGE_USERS",
+    "description": "Create, update, delete users",
+    "module": "USER"
+  },
+  {
+    "permissionName": "MANAGE_ROLES",
+    "description": "Create, update, delete roles",
+    "module": "ROLE"
+  },
+  {
+    "permissionName": "VIEW_TRANSACTIONS",
+    "description": "View transaction records",
+    "module": "TRANSACTION"
+  },
+  {
+    "permissionName": "VIEW_SETTLEMENTS",
+    "description": "View settlement records",
+    "module": "SETTLEMENT"
+  },
+  {
+    "permissionName": "VIEW_CREDIT_ADVICES",
+    "description": "View credit advice records",
+    "module": "CREDIT_ADVICE"
+  },
+  {
+    "permissionName": "VIEW_REFUNDS",
+    "description": "View refund records",
+    "module": "REFUND"
+  },
+  {
+    "permissionName": "GENERATE_REPORTS",
+    "description": "Generate and export reports",
+    "module": "REPORT"
+  },
+  {
+    "permissionName": "VIEW_OWN_DATA",
+    "description": "View own merchant data",
+    "module": "MERCHANT"
+  },
+  {
+    "permissionName": "MANAGE_CHILD_USERS",
+    "description": "Manage only users created by yourself (child users)",
+    "module": "USER"
+  }
+]

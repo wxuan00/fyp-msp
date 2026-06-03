@@ -1,0 +1,199 @@
+.detail-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.detail-grid > .card {
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+/* Identity card spans both rows like profile-main */
+.identity-card {
+  grid-row: 1 / 3;
+  text-align: center;
+  padding: 36px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Maintenance card full-width */
+.maintenance-card {
+  grid-column: 1 / -1;
+}
+.maintenance-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 32px;
+}
+
+.identity-card .detail-body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.detail-card .detail-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.identity-card .detail-row {
+  padding: 10px 0;
+}
+
+.user-avatar-lg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 auto 12px;
+}
+
+.identity-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 4px;
+}
+
+.identity-email {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 16px;
+}
+
+.identity-quick-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.quick-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  gap: 12px;
+}
+.detail-row:last-child {
+  border-bottom: none;
+}
+.detail-label {
+  font-weight: 600;
+  color: #777;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.detail-value {
+  text-align: right;
+  color: #111;
+  font-size: 0.9rem;
+  padding-right: 24px;
+}
+
+.no-data {
+  color: #aaa;
+  font-style: italic;
+  padding: 20px 0;
+  text-align: center;
+}
+.table-loading {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+}
+
+/* Roles list */
+.roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.role-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  background: #fafafa;
+  gap: 12px;
+}
+.role-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.role-type-label {
+  font-size: 0.75rem;
+  color: #888;
+  background: #f0f0f0;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.role-desc {
+  font-size: 0.8rem;
+  color: #666;
+}
+.role-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .identity-card {
+    grid-row: auto;
+  }
+}
+
+/* Linked Merchants */
+.merchants-list { display: flex; flex-direction: column; gap: 8px; }
+.merchant-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+.merchant-row-info { display: flex; flex-direction: column; gap: 2px; }
+.merchant-row-name { font-weight: 600; font-size: 0.9rem; color: #111; }
+.merchant-row-id { font-size: 0.75rem; color: #6b7280; font-family: 'Courier New', monospace; }

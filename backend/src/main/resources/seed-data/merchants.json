@@ -1,0 +1,102 @@
+[
+  {
+    "merchantName": "TechMart Solutions",
+    "contact": "+60123456789",
+    "addressLine1": "123 Tech Street",
+    "addressLine2": "Level 2",
+    "postcode": "50100",
+    "city": "Kuala Lumpur",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  },
+  {
+    "merchantName": "FoodHub Malaysia",
+    "contact": "+60198765432",
+    "addressLine1": "456 Food Avenue",
+    "addressLine2": "Ground Floor",
+    "postcode": "47301",
+    "city": "Petaling Jaya",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  },
+  {
+    "merchantName": "Fashion Forward",
+    "contact": "+60112233445",
+    "addressLine1": "789 Style Mall",
+    "addressLine2": "Unit 3-01",
+    "postcode": "80000",
+    "city": "Johor Bahru",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  },
+  {
+    "merchantName": "GreenGrocers Sdn Bhd",
+    "contact": "+60187654321",
+    "addressLine1": "321 Fresh Market",
+    "addressLine2": "Lot 12",
+    "postcode": "10200",
+    "city": "Georgetown",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  },
+  {
+    "merchantName": "AutoParts Plus",
+    "contact": "+60145678901",
+    "addressLine1": "555 Motor Lane",
+    "addressLine2": "Block B",
+    "postcode": "75000",
+    "city": "Melaka",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  },
+  {
+    "merchantName": "BookWorld Malaysia",
+    "contact": "+60156789012",
+    "addressLine1": "888 Knowledge St",
+    "addressLine2": "Floor 1",
+    "postcode": "50450",
+    "city": "Kuala Lumpur",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  },
+  {
+    "merchantName": "HealthFirst Pharmacy",
+    "contact": "+60167890123",
+    "addressLine1": "222 Wellness Rd",
+    "addressLine2": "Unit A",
+    "postcode": "40170",
+    "city": "Shah Alam",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  },
+  {
+    "merchantName": "Digital Dreams",
+    "contact": "+60178901234",
+    "addressLine1": "444 Tech Hub",
+    "addressLine2": "Suite 5",
+    "postcode": "63000",
+    "city": "Cyberjaya",
+    "country": "Malaysia",
+    "status": "PENDING"
+  },
+  {
+    "merchantName": "PetCare Express",
+    "contact": "+60189012345",
+    "addressLine1": "666 Animal Ave",
+    "addressLine2": "Shop 8",
+    "postcode": "53300",
+    "city": "Kuala Lumpur",
+    "country": "Malaysia",
+    "status": "SUSPENDED"
+  },
+  {
+    "merchantName": "HomeStyle Furniture",
+    "contact": "+60190123456",
+    "addressLine1": "777 Comfort Blvd",
+    "addressLine2": "Warehouse 2",
+    "postcode": "40000",
+    "city": "Shah Alam",
+    "country": "Malaysia",
+    "status": "ACTIVE"
+  }
+]

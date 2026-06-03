@@ -1,0 +1,73 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ isEditMode ? 'Edit Merchant' : 'Create Merchant' }}</h1>
+      <div class="breadcrumb">
+        <a routerLink="/merchants">Inquiries › Merchants</a> › {{ isEditMode ? 'Edit #' + merchantId : 'New' }}
+      </div>
+    </div>
+    <a routerLink="/merchants" class="btn btn-secondary">← Back to Merchants</a>
+  </div>
+
+  <!-- Form -->
+  <div class="card">
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Update Merchant Information' : 'New Merchant Details' }}</h3>
+    </div>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Merchant Name *</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.merchantName" name="merchantName" placeholder="Enter merchant name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="tel" class="form-control" [(ngModel)]="formData.contact" name="contact" placeholder="+60 12-345 6789">
+        </div>
+
+        <div class="form-group">
+          <label>Address Line 1</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.addressLine1" name="addressLine1" placeholder="Street address">
+        </div>
+
+        <div class="form-group">
+          <label>Address Line 2</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.addressLine2" name="addressLine2" placeholder="Unit, floor, etc.">
+        </div>
+
+        <div class="form-group">
+          <label>Postcode</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.postcode" name="postcode" placeholder="e.g. 50100">
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.city" name="city" placeholder="e.g. Kuala Lumpur">
+        </div>
+
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.country" name="country" placeholder="e.g. Malaysia">
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control" [(ngModel)]="formData.status" name="status">
+            <option value="ACTIVE">Active</option>
+            <option value="PENDING">Pending</option>
+            <option value="SUSPENDED">Suspended</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="cancel()" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Save Changes' : 'Create Merchant' }}</button>
+      </div>
+    </form>
+
+    <p *ngIf="message" class="success-msg">✅ {{ message }}</p>
+    <p *ngIf="errorMessage" class="error-msg">⚠️ {{ errorMessage }}</p>
+  </div>
+</div>

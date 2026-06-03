@@ -1,0 +1,118 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Credit Advice Detail</h1>
+      <div class="breadcrumb">
+        <a routerLink="/credit-advices">Inquiries › Credit Advice</a> › {{ creditAdviceId }}
+      </div>
+    </div>
+    <div class="header-actions">
+      <button (click)="exportDetailPdf()" class="btn btn-primary">📄 Export PDF</button>
+      <a routerLink="/credit-advices" class="btn btn-secondary">← Back to List</a>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="detail-grid">
+      <div class="card summary-card skeleton-summary">
+        <div class="skeleton-line" style="width:200px;height:32px;margin:0 auto 12px;"></div>
+        <div class="skeleton-line" style="width:80px;height:24px;margin:0 auto;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="skeleton-line" style="width:180px;height:18px;"></div></div>
+        @for (i of [1,2,3,4,5,6,7,8,9]; track i) {
+          <div class="detail-row">
+            <label><div class="skeleton-line" style="width:100px;height:14px;"></div></label>
+            <span><div class="skeleton-line" style="width:160px;height:14px;"></div></span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!loading && !creditAdvice) {
+    <div class="card" style="padding:48px;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
+      <h3 style="color:#888;">Credit Advice Not Found</h3>
+      <p style="color:#aaa;margin:8px 0 20px;">The credit advice {{ creditAdviceId }} could not be found.</p>
+      <a routerLink="/credit-advices" class="btn btn-primary">← Back to Credit Advices</a>
+    </div>
+  }
+
+  <div *ngIf="creditAdvice && !loading" class="detail-grid">
+    <!-- Summary Card -->
+    <div class="card summary-card">
+      <div class="summary-header">
+        <div class="summary-amount">{{ creditAdvice.currency }} {{ creditAdvice.amount | number:'1.2-2' }}</div>
+      </div>
+      <div class="summary-meta">
+        <span class="summary-label">Credit Advice Amount</span>
+        <span class="summary-date">{{ formatDate(creditAdvice.paymentDate) }}</span>
+      </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Credit Advice Information</h3>
+      </div>
+      <div class="detail-row">
+        <label>Credit Advice ID</label>
+        <span class="id-cell">{{ creditAdvice.creditAdviceId }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Merchant</label>
+        <span>{{ creditAdvice.merchantName || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Amount</label>
+        <span class="amount-cell">{{ creditAdvice.currency }} {{ creditAdvice.amount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Account No</label>
+        <span>{{ creditAdvice.accountNo || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Account ID</label>
+        <span>{{ creditAdvice.accountId || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Payment Date</label>
+        <span>{{ formatDate(creditAdvice.paymentDate) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nested Settlements Table -->
+  <div *ngIf="creditAdvice && !loading" class="card" style="margin-top:24px;">
+    <div class="card-header">
+      <h3>&#128196; Settlements ({{ settlements.length }})</h3>
+    </div>
+    <div *ngIf="settlementsLoading" style="padding:20px;text-align:center;color:#888;">Loading settlements...</div>
+    <table *ngIf="!settlementsLoading && settlements.length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Settlement No</th>
+          <th>Type</th>
+          <th>Settlement Amount</th>
+          <th>Payment Amount</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of settlements">
+          <td class="id-cell">{{ s.settlementId }}</td>
+          <td>{{ s.settlementNo || '-' }}</td>
+          <td>{{ s.settlementType || '-' }}</td>
+          <td class="amount-cell">{{ s.currency }} {{ formatAmount(s.settlementAmount) }}</td>
+          <td class="amount-cell">{{ s.currency }} {{ formatAmount(s.paymentAmount) }}</td>
+          <td>{{ formatDate(s.settlementDate) }}</td>
+          <td><a [routerLink]="['/settlements', s.settlementId]" class="btn btn-sm btn-outline">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!settlementsLoading && settlements.length === 0" style="padding:20px;text-align:center;color:#888;">No settlements found for this credit advice.</div>
+  </div>
+</div>

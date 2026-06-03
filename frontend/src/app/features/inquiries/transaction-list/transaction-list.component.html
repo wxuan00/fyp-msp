@@ -1,0 +1,144 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1>Transaction Inquiry</h1>
+      <div class="breadcrumb">Inquiries › Transactions</div>
+    </div>
+    <div class="header-actions">
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <div class="filter-item">
+      <label class="filter-label">Transaction ID</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter transaction ID" [(ngModel)]="filterTxnId" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Merchant Name</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter merchant name" [(ngModel)]="filterMerchant" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Card Number</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter card number" [(ngModel)]="filterCard" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Status</label>
+      <div class="select-wrap">
+        <select [(ngModel)]="filterStatus" (change)="onFilterChange()">
+          <option value="">All Statuses</option>
+          <option value="APPROVED">Approved</option>
+          <option value="PENDING">Pending</option>
+          <option value="REFUNDED">Refunded</option>]
+          <option value="REFUND_REQUESTED">Refund Requested</option>
+          <option value="DECLINED">Declined</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Channel</label>
+      <div class="select-wrap">
+        <select [(ngModel)]="filterChannel" (change)="onFilterChange()">
+          <option value="">All Channels</option>
+          <option value="CARD">Card</option>
+          <option value="E_WALLET">E-Wallet</option>
+          <option value="ONLINE_BANKING">Online Banking</option>
+          <option value="QR_PAY">QR Pay</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-item filter-date-from">
+      <label class="filter-label">Date From</label>
+      <input type="date" class="form-control" [(ngModel)]="dateFrom" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item filter-date-to">
+      <label class="filter-label">Date To</label>
+      <input type="date" class="form-control" [(ngModel)]="dateTo" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item filter-action">
+      <label class="filter-label">&nbsp;</label>
+      <button class="btn btn-sm btn-ghost" (click)="clearFilters()">✕ Clear</button>
+    </div>
+  </div>
+
+  <div class="card">
+    @if (loading) {
+      <div class="table-loading">Loading transactions...</div>
+    } @else if (loadError) {
+      <div class="load-error">
+        <span>&#9888; Failed to load data. Is the server running?</span>
+        <button class="btn btn-sm btn-outline" (click)="loadPage()">&#8635; Retry</button>
+      </div>
+    } @else {
+      <div class="card-header">
+        <h3>Transactions ({{ totalItems }})</h3>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sortBy('transactionId')">Txn ID {{ getSortIcon('transactionId') }}</th>
+            <th class="sortable" (click)="sortBy('merchantName')">Merchant {{ getSortIcon('merchantName') }}</th>
+            <th class="sortable" (click)="sortBy('paymentChannel')">Channel {{ getSortIcon('paymentChannel') }}</th>
+            <th class="sortable" (click)="sortBy('amount')">Amount {{ getSortIcon('amount') }}</th>
+            <th>Card Number</th>
+            <th class="sortable" (click)="sortBy('status')">Status {{ getSortIcon('status') }}</th>
+            <th class="sortable" (click)="sortBy('txnDate')">Date {{ getSortIcon('txnDate') }}</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of transactions; track t.transactionId) {
+            <tr>
+              <td class="id-cell">{{ t.transactionId }}</td>
+              <td><strong>{{ t.merchantName }}</strong></td>
+              <td>
+                <span class="badge badge-info">{{ t.paymentChannel }}</span>
+              </td>
+              <td class="amount-cell">{{ t.currency }} {{ t.amount | number:'1.2-2' }}</td>
+              <td>{{ t.cardNo | maskCard }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'badge-success': t.status === 'APPROVED',
+                  'badge-warning': t.status === 'PENDING',
+                  'badge-danger': t.status === 'DECLINED',
+                  'badge-refund': t.status === 'REFUND_REQUESTED',
+                  'badge-info': t.status === 'REFUNDED'
+                }">{{
+                  t.status === 'REFUND_REQUESTED' ? 'Refund Requested' :
+                  t.status === 'REFUNDED' ? 'Refunded' :
+                  t.status
+                }}</span>
+              </td>
+              <td class="date-cell">{{ formatDate(t.txnDate!) }}</td>
+              <td>
+                <button (click)="viewDetails(t.transactionId)" class="btn btn-sm btn-outline">View</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div *ngIf="transactions.length === 0" class="no-data">
+        No transactions found.
+      </div>
+
+      <app-pagination
+        [currentPage]="currentPage"
+        [pageSize]="pageSize"
+        [totalItems]="totalItems"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    }
+  </div>
+</div>

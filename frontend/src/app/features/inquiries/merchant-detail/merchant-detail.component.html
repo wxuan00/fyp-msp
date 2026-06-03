@@ -1,0 +1,142 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Merchant Detail</h1>
+      <div class="breadcrumb">
+        <a routerLink="/merchants">Inquiries › Merchants</a> › {{ merchantId }}
+      </div>
+    </div>
+    <div class="header-actions">
+      <a routerLink="/merchants" class="btn btn-secondary">← Back to List</a>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="detail-grid">
+      <div class="card merchant-identity">
+        <div class="identity-area">
+          <div class="skeleton-line" style="width:80px;height:80px;border-radius:50%;margin:0 auto;"></div>
+          <div class="skeleton-line" style="width:160px;height:20px;margin:12px auto 0;"></div>
+          <div class="skeleton-line" style="width:60px;height:22px;margin:8px auto 0;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="skeleton-line" style="width:180px;height:18px;"></div></div>
+        @for (i of [1,2,3,4,5,6,7]; track i) {
+          <div class="detail-row">
+            <label><div class="skeleton-line" style="width:100px;height:14px;"></div></label>
+            <span><div class="skeleton-line" style="width:160px;height:14px;"></div></span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!loading && !merchant) {
+    <div class="card" style="padding:48px;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">🔍</div>
+      <h3 style="color:#888;">Merchant Not Found</h3>
+      <p style="color:#aaa;margin:8px 0 20px;">The merchant {{ merchantId }} could not be found.</p>
+      <a routerLink="/merchants" class="btn btn-primary">← Back to Merchants</a>
+    </div>
+  }
+
+  <div *ngIf="merchant && !loading" class="detail-grid">
+    <!-- Merchant Identity Card -->
+    <div class="card merchant-identity">
+      <div class="identity-area">
+        <div class="avatar-large">{{ (merchant.merchantName || 'M').charAt(0) }}</div>
+        <h2>{{ merchant.merchantName }}</h2>
+        <span class="badge" [ngClass]="{
+          'badge-success': merchant.status === 'ACTIVE',
+          'badge-warning': merchant.status === 'PENDING',
+          'badge-danger': merchant.status === 'SUSPENDED'
+        }">{{ merchant.status }}</span>
+      </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Business Information</h3>
+      </div>
+      <div class="detail-row">
+        <label>Merchant ID</label>
+        <span class="id-cell">{{ merchant.merchantId }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Merchant Name</label>
+        <span>{{ merchant.merchantName }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Contact</label>
+        <span>{{ merchant.contact || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Address Line 1</label>
+        <span>{{ merchant.addressLine1 || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Address Line 2</label>
+        <span>{{ merchant.addressLine2 || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Postcode</label>
+        <span>{{ merchant.postcode || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>City</label>
+        <span>{{ merchant.city || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Country</label>
+        <span>{{ merchant.country || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Status</label>
+        <span class="badge" [ngClass]="{
+          'badge-success': merchant.status === 'ACTIVE',
+          'badge-warning': merchant.status === 'PENDING',
+          'badge-danger': merchant.status === 'SUSPENDED'
+        }">{{ merchant.status }}</span>
+      </div>
+    </div>
+
+    <!-- Linked Users Card (admin only) -->
+    @if (canManageUsers) {
+      <div class="card linked-users-card">
+        <div class="card-header">
+          <h3>Linked Users</h3>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="user-count-badge">{{ mappedUsers.length }}</span>
+            <a routerLink="/users" class="btn btn-sm btn-outline">✏️ Manage Users</a>
+          </div>
+        </div>
+
+        <!-- Mapped users list -->
+        @if (usersLoading) {
+          <div class="users-loading">Loading users…</div>
+        } @else if (mappedUsers.length === 0) {
+          <div class="no-users">No users linked to this merchant yet.</div>
+        } @else {
+          <ul class="mapped-user-list">
+            @for (u of mappedUsers; track u.userId) {
+              <li>
+                <span class="user-avatar-sm">{{ (u.firstName || '?').charAt(0) }}</span>
+                <span class="user-info">
+                  <strong>{{ displayName(u) }}</strong>
+                  <small>{{ u.email }}</small>
+                </span>
+                <span class="badge" [ngClass]="{
+                  'badge-success': u.status === 'ACTIVE',
+                  'badge-warning': u.status === 'INACTIVE',
+                  'badge-danger':  u.status === 'SUSPENDED'
+                }">{{ u.status }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    }
+  </div>
+</div>

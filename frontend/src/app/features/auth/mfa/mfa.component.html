@@ -1,0 +1,30 @@
+<div class="mfa-container">
+  <div class="mfa-card">
+    <div class="mfa-icon">🔐</div>
+    <h2>Two-Factor Authentication</h2>
+    <p class="mfa-subtitle">Enter the 6-digit code from your authenticator app</p>
+
+    <form (ngSubmit)="verifyOtp()">
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control otp-input"
+          [(ngModel)]="otpCode"
+          name="otpCode"
+          placeholder="000000"
+          maxlength="6"
+          autocomplete="off"
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">
+        {{ loading ? 'Verifying...' : 'Verify Code' }}
+      </button>
+    </form>
+
+    <p *ngIf="errorMessage" class="error-msg">⚠️ {{ errorMessage }}</p>
+
+    <button (click)="cancel()" class="btn-link">← Back to Login</button>
+  </div>
+</div>

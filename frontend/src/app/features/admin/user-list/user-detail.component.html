@@ -1,0 +1,156 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>User Details</h1>
+      <div class="breadcrumb">Administration &rsaquo; Users &rsaquo; View</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button (click)="goBack()" class="btn btn-secondary">&#8592; Back</button>
+      @if (user && canManageThisUser) {
+        <button (click)="goEdit()" class="btn btn-primary">&#9998; Edit</button>
+        <button (click)="confirmDeleteUser()" class="btn btn-danger">&#128465; Delete</button>
+      }
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="table-loading">Loading user details...</div>
+  } @else if (error) {
+    <div class="no-data">{{ error }}</div>
+  } @else if (user) {
+    <div class="detail-grid">
+      <!-- Identity Card -->
+      <div class="card detail-card identity-card">
+        <div class="card-header"><h3>&#128100; Identity</h3></div>
+        <div class="detail-body">
+          <div class="user-avatar-lg">{{ (user.displayName || user.firstName || 'U').charAt(0) }}</div>
+          <h2 class="identity-name">{{ user.displayName || (user.firstName + ' ' + user.lastName) }}</h2>
+          <span class="badge badge-primary" style="align-self:center; margin-bottom:16px;">{{ user.role === 'ADMIN' ? 'Bank User' : 'Merchant User' }}</span>
+          <p class="identity-email">{{ user.email }}</p>
+          <div class="identity-quick-stats">
+            <div class="quick-stat">
+              <span class="quick-label">Status</span>
+              <span class="badge" [ngClass]="{
+                'badge-success': user.status === 'ACTIVE',
+                'badge-danger': user.status === 'SUSPENDED' || user.status === 'INACTIVE',
+                'badge-warning': user.status === 'PENDING'
+              }">{{ user.status }}</span>
+            </div>
+            <div class="quick-stat">
+              <span class="quick-label">2FA</span>
+              <span class="badge" [class.badge-success]="user.mfaEnabled" [class.badge-warning]="!user.mfaEnabled">
+                {{ user.mfaEnabled ? 'Enabled' : 'Disabled' }}
+              </span>
+            </div>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Full Name</span>
+            <span class="detail-value">{{ user.firstName }} {{ user.lastName }}</span>
+          </div>
+          <div class="detail-row" *ngIf="user.displayName">
+            <span class="detail-label">Display Name</span>
+            <span class="detail-value">{{ user.displayName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Contact</span>
+            <span class="detail-value">{{ user.contactNumber || '-' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roles Card (top-right) -->
+      <div class="card detail-card">
+        <div class="card-header"><h3>&#128274; Assigned Roles</h3></div>
+        <div class="detail-body">
+          @if (!user.roles || user.roles.length === 0) {
+            <div class="no-data">No roles assigned.</div>
+          } @else {
+            <div class="roles-list">
+              @for (r of user.roles; track r.roleId) {
+                <div class="role-row">
+                  <div class="role-info">
+                    <span class="badge badge-primary">{{ r.roleName }}</span>
+                    <span class="role-type-label">{{ r.roleType || '' }}</span>
+                    <span class="role-desc" *ngIf="r.description">{{ r.description }}</span>
+                  </div>
+                  @if (canViewRoles) {
+                    <div class="role-actions">
+                      <a [routerLink]="['/roles', r.roleId, 'view']" class="btn btn-sm btn-outline">View</a>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Linked Merchants Card -->
+      <div class="card detail-card">
+        <div class="card-header"><h3>&#127970; Linked Merchants</h3></div>
+        <div class="detail-body">
+          @if (user.linkedMerchants && user.linkedMerchants.length > 0) {
+            <div class="merchants-list">
+              @for (m of user.linkedMerchants; track m.merchantId) {
+                <div class="merchant-row">
+                  <div class="merchant-row-info">
+                    <span class="merchant-row-name">{{ m.merchantName }}</span>
+                    <span class="merchant-row-id">{{ m.merchantId }}</span>
+                  </div>
+                  <span class="badge" [ngClass]="{'badge-success': m.status === 'ACTIVE', 'badge-warning': m.status === 'PENDING', 'badge-danger': m.status === 'SUSPENDED'}">{{ m.status }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="no-data">No linked merchants.</div>
+          }
+        </div>
+      </div>
+
+      <!-- Maintenance Info Card (full-width) -->
+      <div class="card detail-card maintenance-card">
+        <div class="card-header"><h3>&#128221; Maintenance Info</h3></div>
+        <div class="detail-body maintenance-body">
+          <div class="detail-row">
+            <span class="detail-label">Created By</span>
+            <span class="detail-value">{{ user.createdBy || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Created Date</span>
+            <span class="detail-value">{{ user.createdAt ? (user.createdAt | date:'dd MMM yyyy, HH:mm') : '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Last Modified By</span>
+            <span class="detail-value">{{ user.lastModifiedBy || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Last Modified Date</span>
+            <span class="detail-value">{{ user.lastModifiedAt ? (user.lastModifiedAt | date:'dd MMM yyyy, HH:mm') : '-' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Delete User Confirm -->
+  <app-confirm-dialog
+    [visible]="showDeleteDialog"
+    title="Delete User"
+    [message]="'Are you sure you want to delete user \'' + deleteLabel + '\'? This action cannot be undone.'"
+    confirmText="Delete"
+    type="danger"
+    (confirmed)="onDeleteConfirmed()"
+    (cancelled)="onDeleteCancelled()">
+  </app-confirm-dialog>
+
+  <!-- Unassign Role Confirm -->
+  <app-confirm-dialog
+    [visible]="showUnassignDialog"
+    title="Remove Role"
+    [message]="'Remove role \'' + unassignRoleName + '\' from this user?'"
+    confirmText="Remove"
+    type="danger"
+    (confirmed)="onUnassignConfirmed()"
+    (cancelled)="onUnassignCancelled()">
+  </app-confirm-dialog>
+</div>

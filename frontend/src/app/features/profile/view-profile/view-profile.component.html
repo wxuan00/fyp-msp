@@ -1,0 +1,205 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>My Profile</h1>
+      <div class="breadcrumb">Account › Profile</div>
+    </div>
+    <div class="actions">
+      <a routerLink="/profile/edit" class="btn btn-primary">✏️ Edit Profile</a>
+      <a routerLink="/profile/change-password" class="btn btn-secondary">🔒 Change Password</a>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="report-loading">
+    <div class="loading-spinner"></div>
+    <span>Loading profile...</span>
+  </div>
+
+  <div *ngIf="user && !loading" class="profile-grid">
+    <!-- Profile Card -->
+    <div class="card profile-main">
+      <div class="profile-avatar-area">
+        <div class="avatar-large">{{ (user.displayName || user.firstName || 'U').charAt(0) }}</div>
+        <h2>{{ user.displayName || (user.firstName + ' ' + user.lastName) }}</h2>
+        <span class="badge badge-primary">{{ user.role }}</span>
+        <p class="profile-email">{{ user.email }}</p>
+      </div>
+      <div class="profile-quick-stats">
+        <div class="quick-stat">
+          <span class="quick-label">Status</span>
+          <span class="badge" [ngClass]="{
+            'badge-success': user.status === 'ACTIVE',
+            'badge-danger': user.status === 'SUSPENDED' || user.status === 'INACTIVE'
+          }">{{ user.status }}</span>
+        </div>
+        <div class="quick-stat">
+          <span class="quick-label">MFA</span>
+          <span class="badge" [ngClass]="user.mfaEnabled ? 'badge-success' : 'badge-warning'">
+            {{ user.mfaEnabled ? 'Enabled' : 'Disabled' }}
+          </span>
+        </div>
+        <div class="quick-stat" *ngIf="user.createdAt">
+          <span class="quick-label">Joined</span>
+          <span class="quick-value">{{ formatDate(user.createdAt) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card profile-details">
+      <div class="card-header">
+        <h3>Account Details</h3>
+      </div>
+      <div class="detail-row">
+        <label>First Name</label>
+        <span>{{ user.firstName }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Last Name</label>
+        <span>{{ user.lastName }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Display Name</label>
+        <span>{{ user.displayName || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Email</label>
+        <span>{{ user.email }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Contact Number</label>
+        <span>{{ user.contactNumber || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Role</label>
+        <span class="badge badge-primary">{{ user.role }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Status</label>
+        <span class="badge" [ngClass]="{
+          'badge-success': user.status === 'ACTIVE',
+          'badge-danger': user.status === 'SUSPENDED' || user.status === 'INACTIVE'
+        }">{{ user.status }}</span>
+      </div>
+      <div class="detail-row" *ngIf="user.createdAt">
+        <label>Account Created</label>
+        <span>{{ formatDate(user.createdAt) }}</span>
+      </div>
+      <div class="detail-row" *ngIf="user.linkedMerchants && user.linkedMerchants.length > 0">
+        <label>Linked Merchants</label>
+        <div class="linked-merchants-list">
+          <span *ngFor="let m of user.linkedMerchants" class="badge badge-primary" style="margin-right:6px;margin-bottom:4px;">
+            🏪 {{ m.merchantName || ('Merchant #' + m.merchantId) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MFA Settings Card -->
+    <div class="card mfa-settings">
+      <div class="card-header">
+        <h3>🔐 Two-Factor Authentication</h3>
+      </div>
+      
+      <div *ngIf="mfaMessage" class="success-msg">✓ {{ mfaMessage }}</div>
+      <div *ngIf="mfaError" class="error-msg">⚠️ {{ mfaError }}</div>
+
+      <!-- MFA Status -->
+      <div class="mfa-status-row" *ngIf="!showMfaSetup && !showMfaDisable">
+        <div class="mfa-info">
+          <strong>Status:</strong>
+          <span class="badge" [ngClass]="user.mfaEnabled ? 'badge-success' : 'badge-warning'">
+            {{ user.mfaEnabled ? 'Enabled' : 'Disabled' }}
+          </span>
+        </div>
+        <p class="mfa-description" *ngIf="!user.mfaEnabled">
+          Add an extra layer of security to your account by enabling two-factor authentication using Google Authenticator.
+        </p>
+        <p class="mfa-description" *ngIf="user.mfaEnabled">
+          Your account is protected with two-factor authentication.
+        </p>
+        <div class="mfa-actions">
+          <button *ngIf="!user.mfaEnabled" class="btn btn-primary" (click)="startMfaSetup()" [disabled]="mfaLoading">
+            {{ mfaLoading ? 'Loading...' : '🔐 Enable MFA' }}
+          </button>
+          <button *ngIf="user.mfaEnabled" class="btn btn-danger" (click)="startMfaDisable()">
+            🚫 Disable MFA
+          </button>
+        </div>
+      </div>
+
+      <!-- MFA Setup Form -->
+      <div class="mfa-setup" *ngIf="showMfaSetup && mfaSetupData">
+        <h4>Set Up Google Authenticator</h4>
+        <ol class="setup-steps">
+          <li>Install <strong>Google Authenticator</strong> on your phone</li>
+          <li>Scan the QR code below with the app</li>
+          <li>Enter the 6-digit code shown in the app</li>
+        </ol>
+
+        <div class="qr-code-container">
+          <img [src]="mfaSetupData.qrCode" alt="QR Code" class="qr-code" />
+        </div>
+
+        <div class="secret-key">
+          <label>Manual Entry Key:</label>
+          <code>{{ mfaSetupData.secret }}</code>
+        </div>
+
+        <div class="form-group">
+          <label>Verification Code</label>
+          <input 
+            type="text" 
+            class="form-control otp-input" 
+            [(ngModel)]="mfaVerifyCode" 
+            maxlength="6" 
+            placeholder="000000"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-secondary" (click)="cancelMfaSetup()">Cancel</button>
+          <button class="btn btn-primary" (click)="enableMfa()" [disabled]="mfaLoading">
+            {{ mfaLoading ? 'Verifying...' : 'Verify & Enable' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- MFA Disable Form -->
+      <div class="mfa-disable" *ngIf="showMfaDisable">
+        <h4>Disable Two-Factor Authentication</h4>
+        <p class="warning-text">⚠️ Disabling MFA will make your account less secure.</p>
+
+        <div class="form-group">
+          <label>Current Password</label>
+          <input 
+            type="password" 
+            class="form-control" 
+            [(ngModel)]="disablePassword" 
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Authenticator Code</label>
+          <input 
+            type="text" 
+            class="form-control otp-input" 
+            [(ngModel)]="disableCode" 
+            maxlength="6" 
+            placeholder="000000"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-secondary" (click)="cancelMfaDisable()">Cancel</button>
+          <button class="btn btn-danger" (click)="disableMfa()" [disabled]="mfaLoading">
+            {{ mfaLoading ? 'Disabling...' : 'Disable MFA' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,157 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ isEditMode ? 'Edit User' : 'Create User' }}</h1>
+      <div class="breadcrumb">Administration › Users › {{ isEditMode ? 'Edit' : 'New' }}</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <a routerLink="/users" class="btn btn-secondary">← Back to Users</a>
+      <button *ngIf="isEditMode" (click)="confirmDelete()" class="btn btn-danger">&#128465; Delete</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        {{ isEditMode
+          ? 'Update User Information'
+          : (userType === 'ADMIN' ? 'New Bank User Details' : 'New Merchant User Details') }}
+      </h3>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>First Name  <span style="color:#dc2626;">*</span></label>
+          <input type="text" class="form-control" [class.input-error]="errors['firstName']" [(ngModel)]="formData.firstName" name="firstName" placeholder="Enter first name">
+          <small class="field-error" *ngIf="errors['firstName']">{{ errors['firstName'] }}</small>
+        </div>
+
+        <div class="form-group">
+          <label>Last Name  <span style="color:#dc2626;">*</span></label>
+          <input type="text" class="form-control" [class.input-error]="errors['lastName']" [(ngModel)]="formData.lastName" name="lastName" placeholder="Enter last name">
+          <small class="field-error" *ngIf="errors['lastName']">{{ errors['lastName'] }}</small>
+        </div>
+
+        <div class="form-group">
+          <label>Display Name  <span style="color:#dc2626;">*</span></label>
+          <input type="text" class="form-control" [class.input-error]="errors['displayName']" [(ngModel)]="formData.displayName" name="displayName" placeholder="Enter display name" (blur)="onDisplayNameBlur()">
+          <small class="field-error" *ngIf="errors['displayName']">{{ errors['displayName'] }}</small>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address <span style="color:#dc2626;">*</span></label>
+          <input type="email" class="form-control" [class.input-error]="errors['email']" [class.input-disabled]="isEditMode" [(ngModel)]="formData.email" name="email" placeholder="user@example.com" [readonly]="isEditMode">
+          <small class="field-error" *ngIf="errors['email']">{{ errors['email'] }}</small>
+          <small class="text-muted" *ngIf="isEditMode">Email address cannot be changed after creation.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="tel" class="form-control" [(ngModel)]="formData.contactNumber" name="contactNumber" placeholder="+60 12-345 6789">
+        </div>
+
+        <div class="form-group">
+          <label>User Type <span style="color:#dc2626;">*</span></label>
+          <input type="text" class="form-control" [value]="formData.role === 'ADMIN' ? 'Bank User' : 'Merchant User'" readonly style="background:#f5f5f5; cursor:not-allowed;">
+          <small class="text-muted">User type cannot be changed{{ isEditMode ? ' after creation' : '' }}.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Status <span style="color:#dc2626;">*</span></label>
+          <select class="form-control" [(ngModel)]="formData.status" name="status">
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+            <option value="SUSPENDED">Suspended</option>
+          </select>
+        </div>
+
+        <!-- Merchant mapping — MERCHANT type only (create & edit) -->
+        @if (userType === 'MERCHANT') {
+          <div class="form-group form-group-full merchant-search-group">
+            <label>Link to Merchant(s) <span style="color:#dc2626;">*</span></label>
+            <!-- Selected merchant chips -->
+            @if (selectedMerchants.length > 0) {
+              <div class="merchant-chips">
+                @for (m of selectedMerchants; track m.merchantId) {
+                  <span class="merchant-chip">
+                    🏪 {{ m.merchantId }} – {{ m.merchantName }}
+                    <button type="button" class="chip-remove" (click)="removeMerchant(m)" title="Remove">✕</button>
+                  </span>
+                }
+              </div>
+            }
+            <div class="merchant-search-wrap" [class.input-error]="errors['merchant'] && !showMerchantDropdown">
+              <div class="search-input-wrap">
+                <span class="search-prefix">🔍</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search merchant by name or ID…"
+                  [(ngModel)]="merchantSearchQuery"
+                  name="merchantSearch"
+                  (input)="onMerchantSearch(merchantSearchQuery)"
+                  (focus)="onMerchantFocus()"
+                  (blur)="onMerchantBlur()"
+                  autocomplete="off">
+              </div>
+              @if (showMerchantDropdown && availableMerchantResults.length > 0) {
+                <ul class="merchant-dropdown">
+                  @for (m of availableMerchantResults; track m.merchantId) {
+                    <li (click)="selectMerchant(m)">
+                      <span class="merchant-avatar">{{ (m.merchantName || 'M').charAt(0) }}</span>
+                      <span class="merchant-info">
+                        <strong>{{ m.merchantName }}</strong>
+                        <small>{{ m.merchantId }} · {{ m.city || m.country || '' }} · <span [class]="'status-dot-' + (m.status || 'PENDING').toLowerCase()">{{ m.status }}</span></small>
+                      </span>
+                    </li>
+                  }
+                </ul>
+              }
+              @if (showMerchantDropdown && merchantSearchQuery.length >= 1 && availableMerchantResults.length === 0) {
+                <div class="search-hint">No merchants found</div>
+              }
+            </div>
+            <small class="field-error" *ngIf="errors['merchant']">{{ errors['merchant'] }}</small>
+          </div>
+        }
+      </div>
+
+      <!-- Role Assignment (both create and edit) -->
+      @if (allRoles.length > 0) {
+        <div class="permissions-section">
+          <div class="permissions-header">
+            <h4>&#128274; Assign Roles <span style="color:#dc2626;">*</span></h4>
+            <small class="text-muted">Select one or more roles to assign to this user.</small>
+          </div>
+          <div class="role-select-group">
+            @for (role of filteredRoles; track role.roleId) {
+              <label class="perm-item" [class.selected]="isRoleSelected(role.roleId)" [class.disabled]="isRoleDisabled(role)" [title]="isRoleDisabled(role) ? 'This role includes Manage Role permission and cannot be assigned to merchant users.' : ''">
+                <input type="checkbox" [checked]="isRoleSelected(role.roleId)" (change)="toggleRole(role.roleId)" [disabled]="isRoleDisabled(role)">
+                <span class="perm-name">{{ role.roleName }}</span>
+                <span class="perm-desc">{{ role.roleType || '' }}{{ role.description ? ' — ' + role.description : '' }}</span>
+              </label>
+            }
+          </div>
+          <small class="field-error" *ngIf="errors['roles']">{{ errors['roles'] }}</small>
+        </div>
+      }
+
+      <div class="form-actions">
+        <button type="button" (click)="cancel()" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Save Changes' : 'Create User' }}</button>
+      </div>
+    </form>
+  </div>
+
+  <app-confirm-dialog
+    [visible]="showDeleteDialog"
+    title="Delete User"
+    [message]="'Are you sure you want to delete user \'' + deleteLabel + '\'? This action cannot be undone.'"
+    confirmText="Delete"
+    type="danger"
+    (confirmed)="onDeleteConfirmed()"
+    (cancelled)="showDeleteDialog = false">
+  </app-confirm-dialog>
+</div>

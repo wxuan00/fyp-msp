@@ -1,0 +1,221 @@
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px 12px;
+  align-items: end;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.filter-item.filter-search { grid-column: span 2; }
+.filter-item.filter-action { justify-self: start; }
+.filter-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.filter-item input[type="text"],
+.filter-item select {
+  height: 36px;
+  padding: 0 10px;
+  font-size: 0.84rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.filter-item input:focus,
+.filter-item select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.12);
+}
+
+.search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-input-wrap .search-prefix {
+  position: absolute;
+  left: 9px;
+  font-size: 1rem;
+  opacity: 0.45;
+  pointer-events: none;
+}
+.search-input-wrap input {
+  padding-left: 30px !important;
+  width: 100%;
+}
+
+.id-cell {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #111;
+}
+
+.action-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e5e5e5;
+}
+.tab-btn {
+  padding: 12px 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover {
+  color: #111;
+  background: #f8f8f8;
+}
+.tab-btn.active {
+  color: #111;
+  border-bottom-color: #111;
+  font-weight: 600;
+}
+.tab-count {
+  background: #e5e5e5;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.tab-btn.active .tab-count {
+  background: #111;
+  color: #fff;
+}
+
+/* Permission tags */
+.permission-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.perm-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #555;
+  letter-spacing: 0.3px;
+}
+.text-muted {
+  color: #aaa;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* Inline validation */
+.input-error {
+  border-color: #ef4444 !important;
+}
+.field-error {
+  display: block;
+  color: #ef4444;
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
+
+/* Permission mapping panel */
+.perm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 16px 0;
+}
+.perm-module {
+  background: #f8f8f8;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+.perm-module-title {
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.8px;
+  color: #555;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.perm-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.perm-checkbox input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.perm-name {
+  font-weight: 600;
+  color: #111;
+}
+.perm-desc {
+  color: #888;
+  font-size: 0.78rem;
+}
+.text-muted {
+  color: #aaa;
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.btn { font-family: inherit; cursor: pointer; transition: all 0.15s; }
+.btn-sm { padding: 6px 14px; font-size: 0.82rem; border-radius: 6px; }
+.btn-ghost {
+  background: none;
+  border: 1px solid #ddd;
+  color: #888;
+}
+.btn-ghost:hover {
+  border-color: #111;
+  color: #111;
+}

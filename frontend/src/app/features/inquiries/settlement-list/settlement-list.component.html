@@ -1,0 +1,106 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Settlement Inquiry</h1>
+      <div class="breadcrumb">Inquiries › Settlements</div>
+    </div>
+    <div class="header-actions">
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-bar">
+    <div class="filter-item filter-search">
+      <label class="filter-label">Merchant Name</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter merchant name" [(ngModel)]="filterMerchant" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Settlement Number</label>
+      <div class="search-input-wrap">
+        <span class="search-prefix">🔍</span>
+        <input type="text" placeholder="Enter settlement number" [(ngModel)]="filterSettlementNo" (input)="onFilterChange()">
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Type</label>
+      <div class="select-wrap">
+        <select [(ngModel)]="filterStatus" (change)="onFilterChange()">
+          <option value="">All Types</option>
+          <option value="NORMAL">Normal</option>
+          <option value="ADJUSTMENT">Adjustment</option>
+          <option value="CHARGEBACK">Chargeback</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Date From</label>
+      <input type="date" class="form-control" [(ngModel)]="dateFrom" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item">
+      <label class="filter-label">Date To</label>
+      <input type="date" class="form-control" [(ngModel)]="dateTo" (change)="onFilterChange()">
+    </div>
+    <div class="filter-item filter-action">
+      <label class="filter-label">&nbsp;</label>
+      <button class="btn btn-sm btn-ghost" (click)="clearFilters()">✕ Clear</button>
+    </div>
+  </div>
+
+  <div class="card">
+    @if (loading) {
+      <div class="table-loading">Loading settlements...</div>
+    } @else if (loadError) {
+      <div class="load-error">
+        <span>&#9888; Failed to load data. Is the server running?</span>
+        <button class="btn btn-sm btn-outline" (click)="loadPage()">&#8635; Retry</button>
+      </div>
+    } @else {
+      <div class="card-header">
+        <h3>Settlements ({{ totalItems }})</h3>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sortBy('settlementNo')">Settlement No {{ getSortIcon('settlementNo') }}</th>
+            <th class="sortable" (click)="sortBy('merchantName')">Merchant {{ getSortIcon('merchantName') }}</th>
+            <th class="sortable" (click)="sortBy('settlementType')">Type {{ getSortIcon('settlementType') }}</th>
+            <th class="sortable" (click)="sortBy('settlementAmount')">Settlement Amt {{ getSortIcon('settlementAmount') }}</th>
+            <th>Payment Amt</th>
+            <th class="sortable" (click)="sortBy('settlementDate')">Date {{ getSortIcon('settlementDate') }}</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of settlements; track s.settlementId) {
+            <tr>
+              <td class="id-cell">{{ s.settlementNo || s.settlementId }}</td>
+              <td><strong>{{ s.merchantName || '-' }}</strong></td>
+              <td><span class="badge badge-info">{{ s.settlementType }}</span></td>
+              <td class="amount-cell">{{ s.currency }} {{ s.settlementAmount | number:'1.2-2' }}</td>
+              <td class="amount-cell">{{ s.currency }} {{ s.paymentAmount | number:'1.2-2' }}</td>
+              <td class="date-cell">{{ formatDate(s.settlementDate!) }}</td>
+              <td>
+                <button (click)="viewDetails(s.settlementId)" class="btn btn-sm btn-outline">View</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div *ngIf="settlements.length === 0" class="no-data">
+        No settlements found.
+      </div>
+
+      <app-pagination
+        [currentPage]="currentPage"
+        [pageSize]="pageSize"
+        [totalItems]="totalItems"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    }
+  </div>
+</div>

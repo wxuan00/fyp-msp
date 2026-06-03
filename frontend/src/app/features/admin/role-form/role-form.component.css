@@ -1,0 +1,146 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+}
+
+/* ── Permissions ──────────────────────────────── */
+.permissions-section {
+  margin-top: 28px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 20px;
+}
+
+.permissions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.permissions-header h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.perm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.perm-loading {
+  color: #888;
+  font-size: 0.85rem;
+  padding: 12px 0;
+}
+
+.perm-module {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.perm-module-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #f9fafb;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.perm-module-header:hover { background: #f1f5f9; }
+
+.perm-module-name { flex: 1; }
+
+.perm-module-count {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: #6b7280;
+  background: #e5e7eb;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.perm-chevron { font-size: 0.8rem; color: #9ca3af; }
+
+.perm-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 4px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.perm-item {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  align-items: flex-start;
+  gap: 6px 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s;
+  font-size: 0.83rem;
+  border: 1px solid transparent;
+}
+
+.perm-item:hover { background: #f3f4f6; }
+
+.perm-item.selected {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.perm-item input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+  accent-color: #6366f1;
+  width: 14px;
+  height: 14px;
+}
+
+.perm-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.perm-name {
+  font-weight: 600;
+  color: #111;
+}
+
+.perm-desc {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.btn { font-family: inherit; cursor: pointer; transition: all 0.15s; }
+.btn-sm { padding: 6px 14px; font-size: 0.82rem; border-radius: 6px; }
+.btn-ghost {
+  background: none;
+  border: 1px solid #ddd;
+  color: #888;
+}
+.btn-ghost:hover {
+  border-color: #111;
+  color: #111;
+}

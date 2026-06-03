@@ -1,0 +1,105 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>{{ isEditMode ? 'Edit Role' : 'Create Role' }}</h1>
+      <div class="breadcrumb">Administration › Roles › {{ isEditMode ? 'Edit' : 'New' }}</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <a routerLink="/roles" class="btn btn-secondary">← Back to Roles</a>
+      <button *ngIf="isEditMode" (click)="confirmDelete()" class="btn btn-danger">&#128465; Delete</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>
+        {{ isEditMode
+          ? (formData.roleType === 'SYSTEM' ? 'Update Bank Role Details' : 'Update Merchant Role Details')
+          : (formData.roleType === 'SYSTEM' ? 'New Bank Role Details' : 'New Merchant Role Details') }}
+      </h3>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Role Name <span style="color:#dc2626;">*</span></label>
+          <input type="text" class="form-control" [class.input-error]="errorMessage && !formData.roleName.trim()" [(ngModel)]="formData.roleName" name="roleName" placeholder="e.g., ADMIN, MERCHANT">
+        </div>
+
+        <div class="form-group">
+          <label>Role Type</label>
+          @if (isEditMode) {
+            <input type="text" class="form-control" [value]="formData.roleType" readonly style="background:#f5f5f5; cursor:not-allowed;">
+            <small class="text-muted">Role type cannot be changed after creation.</small>
+          } @else {
+            <input type="text" class="form-control" [value]="formData.roleType" readonly style="background:#f5f5f5; cursor:not-allowed;">
+            <small class="text-muted">Role type is set based on the selected tab.</small>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label>Description</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.description" name="description" placeholder="What this role can do...">
+        </div>
+      </div>
+
+      <!-- Permissions Section -->
+      <div class="permissions-section">
+        <div class="permissions-header">
+          <h4>🔒 Permissions <span style="color:#dc2626;">*</span></h4>
+          <div class="perm-actions">
+            <button type="button" class="btn btn-sm btn-ghost" (click)="selectAll()">Select All</button>
+            <button type="button" class="btn btn-sm btn-ghost" (click)="clearAll()">Clear All</button>
+          </div>
+        </div>
+        @if (loadingPermissions) {
+          <div class="perm-loading">Loading permissions...</div>
+        } @else {
+          @for (module of permissionModules; track module) {
+            <div class="perm-module">
+              <div class="perm-module-header" (click)="toggleModule(module)">
+                <span class="perm-module-icon">{{ moduleIcons[module] || '📂' }}</span>
+                <span class="perm-module-name">{{ module }}</span>
+                <span class="perm-module-count">
+                  {{ getModuleSelected(module) }}/{{ getModuleTotal(module) }} selected
+                </span>
+                <span class="perm-chevron">{{ expandedModules[module] ? '▾' : '▸' }}</span>
+              </div>
+              @if (expandedModules[module]) {
+                <div class="perm-list">
+                  @for (perm of getPermsByModule(module); track perm.permissionId) {
+                    <label class="perm-item" [class.selected]="isSelected(perm.permissionId)">
+                      <input type="checkbox"
+                        [checked]="isSelected(perm.permissionId)"
+                        (change)="togglePermission(perm.permissionId)">
+                      <span class="perm-text">
+                        <span class="perm-name">{{ perm.permissionName }}</span>
+                        <span class="perm-desc" *ngIf="perm.description">{{ perm.description }}</span>
+                      </span>
+                    </label>
+                  }
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="cancel()" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Create' }}</button>
+      </div>
+    </form>
+  </div>
+
+  <app-confirm-dialog
+    [visible]="showDeleteDialog"
+    title="Delete Role"
+    [message]="'Are you sure you want to delete role \'' + formData.roleName + '\'? This action cannot be undone.'"
+    confirmText="Delete"
+    type="danger"
+    (confirmed)="onDeleteConfirmed()"
+    (cancelled)="showDeleteDialog = false">
+  </app-confirm-dialog>
+</div>

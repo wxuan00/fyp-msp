@@ -1,0 +1,105 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Role Details</h1>
+      <div class="breadcrumb">Administration &rsaquo; Roles &rsaquo; View</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button (click)="goBack()" class="btn btn-secondary">&#8592; Back to Roles</button>
+      <a *ngIf="role" [routerLink]="['/roles', role.roleId, 'edit']" class="btn btn-primary">&#9998; Edit Role</a>
+      <button *ngIf="role" (click)="confirmDelete()" class="btn btn-danger">&#128465; Delete</button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="table-loading">Loading role details...</div>
+  } @else if (error) {
+    <div class="no-data">{{ error }}</div>
+  } @else if (role) {
+    <div class="detail-grid">
+      <!-- Role Info Card -->
+      <div class="card detail-card role-info-card">
+        <div class="card-header"><h3>&#128274; Role Information</h3></div>
+        <div class="detail-body">
+          <div class="role-badge-wrap">
+            <span class="badge badge-primary role-badge-lg">{{ role.roleName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Role ID</span>
+            <span class="detail-value id-cell">{{ role.roleId }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Role Name</span>
+            <span class="detail-value"><strong>{{ role.roleName }}</strong></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Role Type</span>
+            <span class="detail-value">{{ role.roleType || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Description</span>
+            <span class="detail-value">{{ role.description || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Total Permissions</span>
+            <span class="detail-value"><strong>{{ (role.permissions || []).length }}</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Permissions View Card (read-only) -->
+      <div class="card detail-card">
+        <div class="card-header">
+          <h3>&#9989; Assigned Permissions</h3>
+        </div>
+        <div class="detail-body perm-scroll">
+          @if (getPermsByModule().length === 0) {
+            <div class="no-data">No permissions assigned. <a [routerLink]="['/roles', role.roleId, 'edit']">Assign permissions</a></div>
+          } @else {
+            @for (group of getPermsByModule(); track group.module) {
+              <div class="perm-module">
+                <div class="perm-module-title">{{ group.module }}</div>
+                <div class="perm-list">
+                  <span class="perm-tag" *ngFor="let p of group.perms">{{ p.permissionName }}</span>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <!-- Maintenance Info Card (full-width) -->
+      <div class="card detail-card maintenance-card">
+        <div class="card-header"><h3>&#128221; Maintenance Info</h3></div>
+        <div class="detail-body maintenance-body">
+          <div class="detail-row">
+            <span class="detail-label">Created By</span>
+            <span class="detail-value">{{ role.createdBy || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Created Date</span>
+            <span class="detail-value">{{ role.createdAt ? (role.createdAt | date:'dd MMM yyyy, HH:mm') : '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Last Modified By</span>
+            <span class="detail-value">{{ role.lastModifiedBy || '-' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Last Modified Date</span>
+            <span class="detail-value">{{ role.lastModifiedAt ? (role.lastModifiedAt | date:'dd MMM yyyy, HH:mm') : '-' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <app-confirm-dialog
+    [visible]="showDeleteDialog"
+    title="Delete Role"
+    [message]="'Are you sure you want to delete role \'' + (role?.roleName || '') + '\'? This action cannot be undone.'"
+    confirmText="Delete"
+    type="danger"
+    (confirmed)="onDeleteConfirmed()"
+    (cancelled)="onDeleteCancelled()">
+  </app-confirm-dialog>
+</div>

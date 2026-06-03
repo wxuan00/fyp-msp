@@ -1,0 +1,129 @@
+﻿<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Refund Detail</h1>
+      <div class="breadcrumb">
+        <a routerLink="/refunds">Inquiries &rsaquo; Refunds</a> &rsaquo; {{ refundId }}
+      </div>
+    </div>
+    <div class="header-actions">
+      <button (click)="exportDetailPdf()" class="btn btn-primary">📄 Export PDF</button>
+      @if (refund && refund.status === 'PENDING') {
+        <button (click)="openCancelDialog()" class="btn btn-danger" [disabled]="cancelling">
+          {{ cancelling ? 'Cancelling...' : '✕ Cancel Request' }}
+        </button>
+      }
+      <a routerLink="/refunds" class="btn btn-secondary">&larr; Back to List</a>
+    </div>
+  </div>
+
+<app-confirm-dialog
+  [visible]="showCancelDialog"
+  title="Cancel Refund Request"
+  message="Are you sure you want to cancel this refund request? This action cannot be undone."
+  confirmText="Yes, Cancel It"
+  cancelText="Keep Request"
+  type="danger"
+  (confirmed)="confirmCancelRefund()"
+  (cancelled)="dismissCancelDialog()">
+</app-confirm-dialog>
+
+  @if (loading) {
+    <div class="detail-grid">
+      <div class="card summary-card skeleton-summary">
+        <div class="skeleton-line" style="width:200px;height:32px;margin:0 auto 12px;"></div>
+        <div class="skeleton-line" style="width:80px;height:24px;margin:0 auto;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="skeleton-line" style="width:180px;height:18px;"></div></div>
+        @for (i of [1,2,3,4,5,6,7,8,9]; track i) {
+          <div class="detail-row">
+            <label><div class="skeleton-line" style="width:100px;height:14px;"></div></label>
+            <span><div class="skeleton-line" style="width:160px;height:14px;"></div></span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!loading && !refund) {
+    <div class="card" style="padding:48px;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">&#128270;</div>
+      <h3 style="color:#888;">Refund Not Found</h3>
+      <p style="color:#aaa;margin:8px 0 20px;">The refund {{ refundId }} could not be found.</p>
+      <a routerLink="/refunds" class="btn btn-primary">&larr; Back to Refunds</a>
+    </div>
+  }
+
+  <div *ngIf="refund && !loading" class="detail-grid">
+    <!-- Refund Summary Card -->
+    <div class="card summary-card">
+      <div class="summary-header">
+        <div class="summary-amount">{{ refund.currency }} {{ refund.refundAmount | number:'1.2-2' }}</div>
+        <span class="badge" [ngClass]="{
+          'badge-info': refund.status === 'APPROVED',
+          'badge-warning': refund.status === 'PENDING',
+          'badge-danger': refund.status === 'CANCELLED'
+        }">{{
+          refund.status === 'APPROVED' ? 'Refunded' :
+          refund.status
+        }}</span>
+      </div>
+      <div class="summary-meta">
+        <span class="badge badge-warning">{{ refund.refundType || 'REFUND' }}</span>
+        <span class="summary-date">{{ formatDate(refund.submissionDate) }}</span>
+      </div>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Refund Information</h3>
+      </div>
+      <div class="detail-row">
+        <label>Refund ID</label>
+        <span class="id-cell">{{ refund.refundId }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Transaction ID</label>
+        <span class="id-cell">{{ refund.transactionId }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Merchant</label>
+        <span>{{ refund.merchantName || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Original Amount</label>
+        <span class="amount-cell">{{ refund.currency }} {{ refund.amount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Refund Amount</label>
+        <span class="amount-cell refund-amount">{{ refund.currency }} {{ refund.refundAmount | number:'1.2-2' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Refund Type</label>
+        <span>{{ refund.refundType || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Refund Ref No</label>
+        <span class="id-cell">{{ refund.refundRefNo || '-' }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Card No</label>
+        <span>{{ refund.cardNo | maskCard }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Transaction Date</label>
+        <span>{{ formatDate(refund.transactionDate) }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Submission Date</label>
+        <span>{{ formatDate(refund.submissionDate) }}</span>
+      </div>
+      <div class="detail-row">
+        <label>Posted Date</label>
+        <span>{{ formatDate(refund.postedDate) }}</span>
+      </div>
+    </div>
+  </div>
+</div>
